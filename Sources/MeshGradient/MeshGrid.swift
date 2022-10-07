@@ -4,7 +4,7 @@ import simd
 import Accelerate
 
 /// A two-dimensional grid of `Element`.
-public struct Grid<Element> {
+public struct MeshGrid<Element> {
     public var elements: ContiguousArray<Element>
 
     public var width: Int
@@ -48,8 +48,8 @@ public struct Grid<Element> {
 	}
 }
 
-extension Grid: Equatable where Element: Equatable {}
-extension Grid: Hashable where Element: Hashable {}
+extension MeshGrid: Equatable where Element: Equatable {}
+extension MeshGrid: Hashable where Element: Hashable {}
 
 extension Collection {
     
@@ -59,17 +59,17 @@ extension Collection {
     }
 }
 
-extension Grid: VectorArithmetic, AdditiveArithmetic where Element: VectorArithmetic & AdditiveArithmetic {
-    public static func - (lhs: Grid<Element>, rhs: Grid<Element>) -> Grid<Element> {
-        var grid = Grid(repeating: .zero, width: lhs.width, height: lhs.height)
+extension MeshGrid: VectorArithmetic, AdditiveArithmetic where Element: VectorArithmetic & AdditiveArithmetic {
+    public static func - (lhs: MeshGrid<Element>, rhs: MeshGrid<Element>) -> MeshGrid<Element> {
+        var grid = MeshGrid(repeating: .zero, width: lhs.width, height: lhs.height)
         for i in lhs.elements.indices {
             grid.elements[i] = lhs.elements[i] - (rhs.elements[safe: i] ?? Element.zero)
         }
         return grid
     }
     
-    public static func + (lhs: Grid<Element>, rhs: Grid<Element>) -> Grid<Element> {
-        var grid = Grid(repeating: .zero, width: lhs.width, height: lhs.height)
+    public static func + (lhs: MeshGrid<Element>, rhs: MeshGrid<Element>) -> MeshGrid<Element> {
+        var grid = MeshGrid(repeating: .zero, width: lhs.width, height: lhs.height)
         
         for i in lhs.elements.indices {
             grid.elements[i] = lhs.elements[i] + (rhs.elements[safe: i] ?? Element.zero)
@@ -87,7 +87,7 @@ extension Grid: VectorArithmetic, AdditiveArithmetic where Element: VectorArithm
         elements.reduce(0, { $0 + Double($1.magnitudeSquared) })
     }
     
-    public static var zero: Grid<Element> {
+    public static var zero: MeshGrid<Element> {
         .init(repeating: Element.zero, width: 0, height: 0)
     }
 }
