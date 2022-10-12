@@ -87,6 +87,7 @@ public struct MeshGradient: UIViewRepresentable {
 		}
 		context.coordinator.renderer.mtkView(view, drawableSizeWillChange: view.drawableSize)
 		context.coordinator.renderer.subdivisions = subdivisions
+        context.coordinator.renderer.grainAlpha = grainAlpha
 	}
 	
 	public func makeCoordinator() -> Coordinator {
